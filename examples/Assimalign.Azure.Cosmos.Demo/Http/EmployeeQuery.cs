@@ -11,8 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace Assimalign.Azure.Cosmos.Demo.Http
+namespace Assimalign.Azure.CosmosDemo.Http
 {
+    using Assimalign.Azure.Cosmos;
     using Assimalign.Azure.Cosmos.Bindings;
     using Assimalign.Azure.Cosmos.Exceptions;
     
@@ -84,11 +85,7 @@ namespace Assimalign.Azure.Cosmos.Demo.Http
             ILogger logger)
         {
             try
-            {
-
-                repository.Container.GetItemQueryIterator()
-                    .W
-               
+            {               
                 var results = await repository.GetItemsAsync(query);
 
                 return OkJsonResponse<CosmosResponse<Employee>>.Create(results, 200);

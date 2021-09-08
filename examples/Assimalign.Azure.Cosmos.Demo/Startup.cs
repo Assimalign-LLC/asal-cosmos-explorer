@@ -15,11 +15,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Azure.Identity;
 
-[assembly: WebJobsStartup(typeof(Assimalign.Azure.Cosmos.Demo.Startup))]
-namespace Assimalign.Azure.Cosmos.Demo
+[assembly: WebJobsStartup(typeof(Assimalign.Azure.CosmosDemo.Startup))]
+namespace Assimalign.Azure.CosmosDemo
 {
+    using Assimalign.Azure.Cosmos;
     using Assimalign.Azure.Cosmos.Bindings;
-    using Assimalign.Azure.Cosmos.Demo.Http;
+    using Assimalign.Azure.CosmosDemo.Http;
     
 
     public class Startup : IWebJobsStartup
@@ -32,7 +33,7 @@ namespace Assimalign.Azure.Cosmos.Demo
                 {
                     Database = "ErpCore",
                     Container = "Employee",
-                    Connection = "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
+                    Connection = Environment.GetEnvironmentVariable("ConnectionStrings:AzureCosmosDbEmulator",EnvironmentVariableTarget.Process),
                     ClientOptions = new CosmosClientOptions()
                     {
                         AllowBulkExecution = true,

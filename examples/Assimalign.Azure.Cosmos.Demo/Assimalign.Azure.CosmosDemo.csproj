@@ -9,7 +9,7 @@
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.13" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\libraries\Assimalign.Azure.Cosmos\Assimalign.Azure.Cosmos\Assimalign.Azure.Cosmos.csproj" />
+    <ProjectReference Include="..\..\src\Assimalign.Azure.Cosmos\Assimalign.Azure.Cosmos.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
