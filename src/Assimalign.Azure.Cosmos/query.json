@@ -1,0 +1,79 @@
+{
+  "user": {
+    "firstName": "Chase",
+    "lastName": "Crawford",
+    "middleName": "Ryan",
+    "details": {
+      "ssc": "787-968-7854",
+      "taxId": ""
+    },
+    "mobilePhone": "",
+    "workPhone": "",
+    "likes": [
+      {
+        "type": "",
+        "value": ""
+      }
+    ]
+  },
+
+
+  "query": {
+
+
+    "$where": {
+      "$and": [
+        {
+          "$property": "",
+
+        }
+      ]
+    }
+  },
+
+
+
+  "select": [
+    {
+      "property": "firstName",
+      "function": "CONCAT",
+      "using": [
+        {
+          "value": "firstName",
+          "type": 0
+        },
+        {
+          "value": "lastName",
+          "type": 0
+        }
+      ],
+      "as": "FullName"
+    }
+  ],
+  "from": "root",
+  "where": {
+    "property": "",
+    "operator": 0,
+    "value": "any",
+    "conjunction": "And",
+    "childern": [
+      {
+        "property": "",
+        "operator": 0,
+        "value": "any",
+        "conjunction": "And"
+      }
+    ]
+  },
+  "orderBy": [
+    {
+      "property": "LastName",
+      "sort": "Ascending"
+    }
+  ],
+  "groupBy": [
+    {
+      "property": ""
+    }
+  ]
+}

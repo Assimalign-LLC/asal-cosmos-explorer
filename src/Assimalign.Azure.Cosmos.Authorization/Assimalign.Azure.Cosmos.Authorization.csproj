@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Version>1.0.0-pre.2</Version>
+		<PackageIcon>logo.png</PackageIcon>
+		<TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+		<PackageId>Assimalign.Azure.Cosmos.Authorization</PackageId>
+		<AssemblyName>Assimalign.Azure.Cosmos.Authorization</AssemblyName>
+		<RootNamespace>Assimalign.Azure.Cosmos.Authorization</RootNamespace>
+		<Description></Description>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Assimalign.Azure.Cosmos\Assimalign.Azure.Cosmos.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\..\..\..\logo.png">
+		  <Pack>True</Pack>
+		  <PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+</Project>

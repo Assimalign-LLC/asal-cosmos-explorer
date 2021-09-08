@@ -1,0 +1,50 @@
+﻿Brainstorm on url Query Options for GET Requests
+
+
+// O'Data Query Format 
+$select=""&
+$from=""
+$where=""
+$groupBy=""
+
+
+// JSON Query Format
+  "select": [
+    {
+      "property": "firstName",
+      "function": 0,
+      "using": [
+        {
+          "value": "",
+          "type": 0
+        }
+      ],
+      "as": "FullName"
+    }
+  ],
+  "from": "root",
+  "where": {
+    "property": "",
+    "operator": 0,
+    "value": "any",
+    "conjunction": "And",
+    "childern": [
+      {
+        "property": "",
+        "operator": 0,
+        "value": "any",
+        "conjunction": "And"
+      }
+    ]
+  },
+  "orderBy": [
+    {
+      "property": "LastName",
+      "sort": "Ascending"
+    }
+  ],
+  "groupBy": [
+    {
+      "property": ""
+    }
+  ]

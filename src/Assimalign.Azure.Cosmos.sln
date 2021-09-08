@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31612.314
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assimalign.Azure.Cosmos", "Assimalign.Azure.Cosmos\Assimalign.Azure.Cosmos.csproj", "{7FB14B93-4A39-4E9C-8EE9-DB5C24D585E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libraries", "libraries", "{8BE2D90E-1BB3-445C-B819-8C24B6683878}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{929E5AC9-5248-4B70-9D43-20A88ADD3799}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assimalign.Azure.Cosmos.Authorization", "Assimalign.Azure.Cosmos.Authorization\Assimalign.Azure.Cosmos.Authorization.csproj", "{38B5A04A-DAA7-41C2-8AFA-7F54DEC3CC00}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{EB84274F-8A05-46B5-9C69-BAC541B0E176}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "references", "references", "{3932827C-FFAE-4E82-A638-5815C2E45654}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assimalign.Azure.CosmosTests", "..\..\tests\Assimalign.Azure.CosmosTests\Assimalign.Azure.CosmosTests\Assimalign.Azure.CosmosTests.csproj", "{36510882-7F47-4BAC-A52A-9BD71BF21F6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assimalign.Azure.Cosmos.OData", "Assimalign.Azure.Cosmos.OData\Assimalign.Azure.Cosmos.OData.csproj", "{518CB69A-7948-4EC8-B3EE-D2ADF94B9DB3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FB14B93-4A39-4E9C-8EE9-DB5C24D585E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FB14B93-4A39-4E9C-8EE9-DB5C24D585E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FB14B93-4A39-4E9C-8EE9-DB5C24D585E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FB14B93-4A39-4E9C-8EE9-DB5C24D585E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38B5A04A-DAA7-41C2-8AFA-7F54DEC3CC00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38B5A04A-DAA7-41C2-8AFA-7F54DEC3CC00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38B5A04A-DAA7-41C2-8AFA-7F54DEC3CC00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38B5A04A-DAA7-41C2-8AFA-7F54DEC3CC00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36510882-7F47-4BAC-A52A-9BD71BF21F6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36510882-7F47-4BAC-A52A-9BD71BF21F6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36510882-7F47-4BAC-A52A-9BD71BF21F6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36510882-7F47-4BAC-A52A-9BD71BF21F6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{518CB69A-7948-4EC8-B3EE-D2ADF94B9DB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{518CB69A-7948-4EC8-B3EE-D2ADF94B9DB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{518CB69A-7948-4EC8-B3EE-D2ADF94B9DB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{518CB69A-7948-4EC8-B3EE-D2ADF94B9DB3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7FB14B93-4A39-4E9C-8EE9-DB5C24D585E4} = {8BE2D90E-1BB3-445C-B819-8C24B6683878}
+		{38B5A04A-DAA7-41C2-8AFA-7F54DEC3CC00} = {8BE2D90E-1BB3-445C-B819-8C24B6683878}
+		{36510882-7F47-4BAC-A52A-9BD71BF21F6E} = {929E5AC9-5248-4B70-9D43-20A88ADD3799}
+		{518CB69A-7948-4EC8-B3EE-D2ADF94B9DB3} = {8BE2D90E-1BB3-445C-B819-8C24B6683878}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E7675043-3DE0-4C5F-8C60-4AF812E853C6}
+	EndGlobalSection
+EndGlobal
