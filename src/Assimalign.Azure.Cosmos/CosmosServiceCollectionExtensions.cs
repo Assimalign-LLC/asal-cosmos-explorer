@@ -26,7 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddCosmosService<T>(this IServiceCollection services, Action<CosmosOptions> configure)
             where T : class, new()
         {
-            return services.AddSingleton<ICosmosRepository<T>, CosmosRepository<T>>(serviceProvider=>
+            return services.AddSingleton<ICosmosRepository<T>, CosmosRepository<T>>(serviceProvider =>
             {
                 var options = new CosmosOptions();
                 configure.Invoke(options);
