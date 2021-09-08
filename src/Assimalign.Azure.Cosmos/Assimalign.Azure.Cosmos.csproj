@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+	    <Version>1.0.0-pre.3</Version>
+        <PackageIcon>logo.png</PackageIcon>
+		<LangVersion>Latest</LangVersion>
+		<TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+		<PackageId>Assimalign.Azure.Cosmos</PackageId>
+		<AssemblyName>Assimalign.Azure.Cosmos</AssemblyName>
+		<RootNamespace>Assimalign.Azure.Cosmos</RootNamespace>
+		<Description>A library with standardized query API's for Http Requests. Supports all Linq to SQL functionality exposed by the Microsoft Cosmos SDK.</Description>
+	    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Remove="C:\Users\ccrawford\.nuget\packages\microsoft.azure.cosmos\3.18.0\contentFiles\any\netstandard2.0\ThirdPartyNotice.txt" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.20.1" />
+        <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.27" />
+        <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.0.12" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\..\..\..\..\logo.png">
+		  <Pack>True</Pack>
+		  <PackagePath></PackagePath>
+		</None>
+    </ItemGroup>
+</Project>
