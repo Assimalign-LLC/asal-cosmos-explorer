@@ -36,10 +36,14 @@ namespace Assimalign.Azure.Cosmos
         public IEnumerable<T> Items { get; set; }
 
         /// <summary>
+        /// Cross queries related items
+        /// </summary>
+        public IEnumerable<T> ResolvedItems { get; set; }
+
+        /// <summary>
         /// The SQL query conversion used to query the collection.
         /// </summary>
         public string ItemsQuery { get; set; }
-
 
         /// <summary>
         /// The execution stats for the query request.

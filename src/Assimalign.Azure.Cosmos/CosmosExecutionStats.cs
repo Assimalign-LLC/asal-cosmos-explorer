@@ -9,7 +9,7 @@ namespace Assimalign.Azure.Cosmos
     /// <summary>
     /// 
     /// </summary>
-    public class CosmosExecutionStats
+    public sealed class CosmosExecutionStats
     {
         /// <summary>
         /// 

@@ -27,23 +27,11 @@ namespace Assimalign.Azure.CosmosDemo
     {
         public void Configure(IWebJobsBuilder builder)
         {
-            builder.AddCosmosExtension<EmployeeQuery.Employee>(configure =>
+            builder.AddCosmosODataExtensions<EmployeeQuery.Employee>(configure =>
             {
-                return new CosmosOptions()
-                {
-                    Database = "ErpCore",
-                    Container = "Employee",
-                    Connection = Environment.GetEnvironmentVariable("ConnectionStrings:AzureCosmosDbEmulator",EnvironmentVariableTarget.Process),
-                    ClientOptions = new CosmosClientOptions()
-                    {
-                        AllowBulkExecution = true,
-                        SerializerOptions = new CosmosSerializationOptions()
-                        {
-                            IgnoreNullValues = true,
-                            PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase,
-                        }
-                    }
-                };
+                configure.Database = "ErpCore";
+                configure.Container = "Employee";
+                configure.Connection = Environment.GetEnvironmentVariable("ConnectionStrings:AzureCosmosDbEmulator", EnvironmentVariableTarget.Process);
             });
         }
 

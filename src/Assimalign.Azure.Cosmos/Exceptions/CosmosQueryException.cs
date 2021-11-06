@@ -21,8 +21,8 @@ namespace Assimalign.Azure.Cosmos.Exceptions
         /// </summary>
         /// <param name="message"></param>
         /// <param name="innerException"></param>
-        public CosmosQueryException(string message, Exception innerException) 
-            : base(message, innerException) {  }
+        public CosmosQueryException(string message, Exception innerException)
+            : base(message, innerException) { }
 
 
         /// <summary>

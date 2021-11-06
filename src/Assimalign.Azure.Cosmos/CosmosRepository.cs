@@ -59,6 +59,12 @@ namespace Assimalign.Azure.Cosmos
         public Container Container => this.container;
 
         /// <summary>
+        /// 
+        /// </summary>
+        public IOrderedQueryable<T> Queryable => 
+            this.container.GetItemLinqQueryable<T>();
+
+        /// <summary>
         /// Gets an Item by id within a particular partition
         /// </summary>
         /// <param name="id">The items unique id. (NOTE: Not uncommon to have the same unique ids in different partitions.)</param>

@@ -8,7 +8,7 @@ namespace Assimalign.Azure.Cosmos.Clauses
 {
 	using Assimalign.Azure.Cosmos.Serialization;
 
-	[JsonConverter(typeof(CosmosOperatorConverter))]
+	[JsonConverter(typeof(CosmosQueryOperatorConverter))]
 	public enum OperatorType : int
 	{
 		None = 0,

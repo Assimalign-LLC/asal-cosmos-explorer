@@ -57,7 +57,7 @@ namespace Assimalign.Azure.Cosmos.Clauses
         /// The value to use for the predicate evaluation.
         /// </summary>
         [JsonPropertyName("$value")]
-        [JsonConverter(typeof(CosmosObjectConverter))]
+        [JsonConverter(typeof(CosmosQueryObjectConverter))]
         public object Value { get; set; }
 
 

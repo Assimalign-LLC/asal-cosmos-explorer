@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Version>1.0.0-pre.3</Version>
+		<PackageIcon>.assimalign.logo.png</PackageIcon>
+		<LangVersion>Latest</LangVersion>
+		<TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+		<PackageId>Assimalign.Azure.Cosmos</PackageId>
+		<AssemblyName>Assimalign.Azure.Cosmos.Core</AssemblyName>
+		<RootNamespace>Assimalign.Azure.Cosmos</RootNamespace>
+		<Description>A library with standardized query API's for HTTP Requests. Supports all Linq to SQL functionality exposed by the Microsoft Cosmos SDK.</Description>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<ApplicationIcon></ApplicationIcon>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Include="..\..\.assimalign.logo.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+</Project>

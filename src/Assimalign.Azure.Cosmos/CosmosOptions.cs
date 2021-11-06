@@ -4,11 +4,15 @@ using Microsoft.Azure.Cosmos;
 
 namespace Assimalign.Azure.Cosmos
 {
+    using Assimalign.Azure.Cosmos.Serialization;
+
     /// <summary>
     /// 
     /// </summary>
     public sealed class CosmosOptions
     {
+        private TokenCredential cosmosTokenCredential;
+        private CosmosClientOptions cosmosClientOptions;
 
         /// <summary>
         /// The name of the database to connect to.
@@ -20,36 +24,31 @@ namespace Assimalign.Azure.Cosmos
         /// </summary>
         public string Container { get; set; }
 
-
         /// <summary>
         /// The Connection string to the Cosmos DB instance.
         /// </summary>
         public string Connection { get; set; }
-
 
         /// <summary>
         /// The Cosmos DB Endpoint.
         /// </summary>
         public string Uri { get; set; }
 
-
         /// <summary>
-        /// 
+        /// Set the Azure Credentials to be used for negotiating authenticated connection to 
+        /// Cosmos DB instance.
         /// </summary>
-        [Obsolete("Future State: Allow users to be able to create their own query syntax.")]
-        public CosmosQueryParser QueryParser { get; set; }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public TokenCredential Credentials { get; set; }
-
+        public TokenCredential Credentials => cosmosTokenCredential;
 
         /// <summary>
         /// CosmosClient Options to be passed to the CosmosRepository
         /// </summary>
-        public CosmosClientOptions ClientOptions { get; set; }
+        public CosmosClientOptions ClientOptions => cosmosClientOptions;
+
+        /// <summary>
+        /// Parses the query request for incoming queries.
+        /// </summary>
+        public CosmosQueryParser QueryParser { get; set; }
 
         /// <summary>
         /// Configure the underlying CosmosClient options.
@@ -57,8 +56,8 @@ namespace Assimalign.Azure.Cosmos
         /// <param name="configure"></param>
         public void AddClientOptions(Action<CosmosClientOptions> configure)
         {
-            ClientOptions = new CosmosClientOptions();
-            configure.Invoke(ClientOptions);
+            cosmosClientOptions = new CosmosClientOptions();
+            configure.Invoke(cosmosClientOptions);
         }
 
         /// <summary>
@@ -66,6 +65,17 @@ namespace Assimalign.Azure.Cosmos
         /// </summary>
         /// <param name="credentials"></param>
         public void AddTokenCredentials(TokenCredential credentials) =>
-            Credentials = credentials;
+            cosmosTokenCredential = credentials;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="resolver"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public CosmosOptions RegisterResolver(ICosmosQueryResolver resolver)
+        {
+            throw new NotImplementedException("");
+        }
     }
 }

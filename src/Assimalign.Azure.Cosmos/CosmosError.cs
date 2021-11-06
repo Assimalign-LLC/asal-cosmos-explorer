@@ -26,7 +26,6 @@ namespace Assimalign.Azure.Cosmos
         /// </summary>
         public string Message { get; set; }
 
-
         /// <summary>
         /// The source of the error or errors if any.
         /// </summary>

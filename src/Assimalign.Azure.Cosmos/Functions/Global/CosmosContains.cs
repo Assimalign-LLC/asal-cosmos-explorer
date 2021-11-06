@@ -18,7 +18,7 @@ namespace Assimalign.Azure.Cosmos.Functions
         /// The value to search for in string.
         /// </summary>
         [JsonPropertyName("value")]
-        [JsonConverter(typeof(CosmosObjectConverter))]
+        [JsonConverter(typeof(CosmosQueryObjectConverter))]
         public object Value { get; set; }
 
         /// <summary>

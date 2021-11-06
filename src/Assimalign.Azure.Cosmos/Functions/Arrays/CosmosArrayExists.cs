@@ -30,7 +30,7 @@ namespace Assimalign.Azure.Cosmos.Functions
         /// 
         /// </summary>
         [JsonPropertyName("value")]
-        [JsonConverter(typeof(CosmosObjectConverter))]
+        [JsonConverter(typeof(CosmosQueryObjectConverter))]
         public object Value { get; set; }
 
 

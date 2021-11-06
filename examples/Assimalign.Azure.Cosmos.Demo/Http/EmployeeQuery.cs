@@ -80,12 +80,13 @@ namespace Assimalign.Azure.CosmosDemo.Http
         [FunctionName("HttpCosmosQueryEmployee")]
         public async Task<IActionResult> GetUsersAsync(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "query/employees")] HttpRequest request,
-            [CosmosQuery] ICosmosQuery<Employee> query,
-            [CosmosQuery] ICosmosRepository<Employee> repository,
+            [CosmosBinding] ICosmosQuery<Employee> query,
+            [CosmosBinding] ICosmosRepository<Employee> repository,
             ILogger logger)
         {
             try
-            {               
+            {  
+               
                 var results = await repository.GetItemsAsync(query);
 
                 return OkJsonResponse<CosmosResponse<Employee>>.Create(results, 200);

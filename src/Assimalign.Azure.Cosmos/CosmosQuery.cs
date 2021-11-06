@@ -11,7 +11,7 @@ namespace Assimalign.Azure.Cosmos
     /// Represents a query object
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public sealed class CosmosQuery<T> : ICosmosQuery<T>
+    internal sealed class CosmosQuery<T> : ICosmosQuery<T>
     {
         /// <summary>
         /// 

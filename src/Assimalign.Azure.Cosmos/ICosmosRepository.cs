@@ -32,6 +32,11 @@ namespace Assimalign.Azure.Cosmos
         /// <summary>
         /// 
         /// </summary>
+        IOrderedQueryable<T> Queryable { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="id"></param>
         /// <param name="partition">The Partition in which to query item.</param>
         /// <returns></returns>

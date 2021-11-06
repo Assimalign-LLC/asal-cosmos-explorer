@@ -46,7 +46,7 @@ namespace Assimalign.Azure.Cosmos.Clauses
         /// 
         /// </summary>
         [JsonPropertyName("$sort")]
-        [JsonConverter(typeof(CosmosSortTypeConverter))]
+        [JsonConverter(typeof(CosmosQuerySortTypeConverter))]
         public SortType Sort { get; set; }
 
         /// <summary>

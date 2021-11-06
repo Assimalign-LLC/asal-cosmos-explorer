@@ -47,7 +47,7 @@ namespace Assimalign.Azure.Cosmos.Clauses
         /// 
         /// </summary>
         [JsonPropertyName("$value")]
-        [JsonConverter(typeof(CosmosObjectConverter))]
+        [JsonConverter(typeof(CosmosQueryObjectConverter))]
         public object Value { get; set; }
 
         /// <summary>
