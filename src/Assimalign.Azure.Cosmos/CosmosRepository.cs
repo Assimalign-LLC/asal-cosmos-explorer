@@ -14,7 +14,8 @@ namespace Assimalign.Azure.Cosmos
 {
     using Assimalign.Azure.Cosmos.Utilities;
     using Assimalign.Azure.Cosmos.Exceptions;
-    
+    using System.Text.Json;
+
     /// <summary>
     /// 
     /// </summary>
@@ -24,28 +25,21 @@ namespace Assimalign.Azure.Cosmos
     {
         private readonly CosmosClient client;
         private readonly Container container;
-        private readonly CosmosOptions options;
-        private static ConcurrentDictionary<string, IQueryable<T>> queryCache;
+        private readonly CosmosRepositoryOptions options;
+        private static ConcurrentDictionary<string, IQueryable<T>> queryCache
+            = new ConcurrentDictionary<string, IQueryable<T>>();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="options"></param>
-        public CosmosRepository(CosmosOptions options)
+        public CosmosRepository(CosmosRepositoryOptions options)
         {
             this.options = options;
-
-            if (this.options.Credentials is null)
-            {
-                this.client = new CosmosClient(options.Connection, options.ClientOptions);
-            }
-            else
-            {
-                this.client = new CosmosClient(options.Uri, options.Credentials, options.ClientOptions);
-            }
-
+            this.client = options.ClientCredentials is null ?
+                new CosmosClient(options.Connection, options.ClientOptions) :
+                new CosmosClient(options.Uri, options.ClientCredentials, options.ClientOptions);
             this.container = this.client.GetContainer(options.Database, options.Container);
-            queryCache = new ConcurrentDictionary<string, IQueryable<T>>();
         }
 
         /// <summary>
@@ -71,18 +65,18 @@ namespace Assimalign.Azure.Cosmos
         /// <param name="partition">The Partition in which to query the unique item.</param>
         /// <param name="cancellation"></param>
         /// <returns></returns>
-        public virtual Task<CosmosResponse<T>> GetItemAsync(string id, object partition, CancellationToken cancellation = default)
+        public virtual Task<CosmosItemResponse<T>> GetItemAsync(string id, object partition, CancellationToken cancellation = default)
         {
             var partitionKey = GetPartitionKey(partition) ?? 
-                throw new ArgumentNullException("Partition Key is Required when reading item by id within Cosmos Db.");
+                throw new ArgumentNullException("Partition Key is required when reading item by id within Cosmos DB.");
 
             return Task.Run(async () =>
             {
                 var itemResponse = await container.ReadItemAsync<T>(id, partitionKey, null, cancellation);
-                var cosmosResponse = new CosmosResponse<T>()
+                var cosmosResponse = new CosmosItemResponse<T>()
                 {
                     StatusCode = itemResponse.StatusCode,
-                    Items = new[] { itemResponse.Resource },
+                    Item = itemResponse.Resource,
                     Stats = new CosmosExecutionStats()
                     {
                         EllapsedMilliseconds = (long)itemResponse.Diagnostics
@@ -90,53 +84,6 @@ namespace Assimalign.Azure.Cosmos
                             .TotalMilliseconds
                     }
                 };
-                return cosmosResponse;
-            });
-        }
-
-        /// <summary>
-        /// Get items based on requested query. If query is null all items will be returned
-        /// </summary>
-        /// <param name="query"></param>
-        /// <param name="cancellation"></param>
-        /// <returns></returns>
-        public virtual Task<CosmosResponse<T>> GetItemsAsync(ICosmosQuery<T> query = null, CancellationToken cancellation = default)
-        {
-            query ??= new CosmosQuery<T>();
-
-            return Task.Run(async () =>
-            {
-                long elapsedTime = 0;
-                var resources = new List<T>();
-                var linqQuery = container.GetItemLinqQueryable<T>().CreateQuery(query as CosmosQuery<T>);
-                var linqDefinition = linqQuery.ToQueryDefinition();
-
-                using (FeedIterator<T> iterator = linqQuery.ToFeedIterator())
-                {
-                    while (iterator.HasMoreResults)
-                    {
-                        var iteratorResponse = await iterator.ReadNextAsync(cancellation);
-                        foreach (var resource in iteratorResponse)
-                        {
-                            resources.Add(resource);
-                        }
-                        elapsedTime += (long)iteratorResponse.Diagnostics
-                            .GetClientElapsedTime()
-                            .TotalMilliseconds;
-                    }
-                }
-
-                var cosmosResponse = new CosmosResponse<T>()
-                {
-                    Items = resources,
-                    ItemsQuery = linqDefinition.QueryText.Replace('"', ' ').Replace("[ ", "['").Replace(" ]", "']"),
-                    StatusCode = HttpStatusCode.OK,
-                    Stats = new CosmosExecutionStats()
-                    {
-                        EllapsedMilliseconds = elapsedTime
-                    }
-                };
-
                 return cosmosResponse;
             });
         }
@@ -145,18 +92,31 @@ namespace Assimalign.Azure.Cosmos
         /// Creates a single item within the specified container.
         /// </summary>
         /// <param name="item"></param>
+        /// <param name="partition"></param>
+        /// <param name="cancellation"></param>
         /// <returns></returns>
-        public virtual Task<CosmosResponse<T>> CreateItemAsync(T item, Expression<Func<T, object>> partition = null, CancellationToken cancellation = default)
+        public virtual Task<CosmosItemResponse<T>> CreateItemAsync(T item, Func<T, object> partition, CancellationToken cancellation = default) =>
+            CreateItemAsync(item, partition.Invoke(item), cancellation);
+
+        /// <summary>
+        /// Creates a single item within the specified container.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="partition"></param>
+        /// <param name="cancellation"></param>
+        /// <returns></returns>
+        public virtual Task<CosmosItemResponse<T>> CreateItemAsync(T item,  object partition, CancellationToken cancellation = default)
         {
-            var value = partition.Compile().Invoke(item);
-            var partitionKey = GetPartitionKey(value);
+            var partitionKey = GetPartitionKey(partition) ??
+                throw new ArgumentNullException("Partition Key is required when creating an item in Cosmos DB.");
 
             return Task.Run(async () =>
             {
                 var itemResponse = await container.CreateItemAsync(item, partitionKey, null, cancellation);
-                var cosmosResponse = new CosmosResponse<T>()
+                var cosmosResponse = new CosmosItemResponse<T>()
                 {
-                    Items = new[] { itemResponse.Resource },
+                    StatusCode = itemResponse.StatusCode,
+                    Item = itemResponse.Resource,
                     Stats = new CosmosExecutionStats()
                     {
                         EllapsedMilliseconds = (long)itemResponse.Diagnostics
@@ -166,44 +126,6 @@ namespace Assimalign.Azure.Cosmos
                 };
 
                 return cosmosResponse;
-            });
-        }
-
-        /// <summary>
-        /// Creates a collection of items as a batch request within the specified partition key.
-        /// </summary>
-        /// <param name="items"></param>
-        /// <param name="partition">The separation of items within the collection.</param>
-        /// <param name="cancellation"></param>
-        /// <returns></returns>
-        public virtual Task<CosmosBulkResponse> CreateItemsAsync(IEnumerable<T> items, object partition, CancellationToken cancellation = default)
-        {
-            var partitionKey = GetPartitionKey(partition) ??
-                    throw new ArgumentNullException("Partition Key must be provided when creating multiple items in Cosmos Db.");
-
-            return Task.Run(async () =>
-            {
-                var transaction = container.CreateTransactionalBatch(partitionKey);
-
-                foreach(var item in items)
-                {
-                    transaction.CreateItem<T>(item);
-                }
-
-                var transactionResponse = await transaction.ExecuteAsync(cancellation);
-
-                return new CosmosBulkResponse()
-                {
-                    StatusCode = transactionResponse.StatusCode,
-                    ErrorMessage = transactionResponse.ErrorMessage,
-                    Count = transactionResponse.Count,
-                    Stats = new CosmosExecutionStats()
-                    {
-                        EllapsedMilliseconds = (long)transactionResponse.Diagnostics
-                            .GetClientElapsedTime()
-                            .TotalMilliseconds
-                    }
-                };
             });
         }
 
@@ -213,7 +135,7 @@ namespace Assimalign.Azure.Cosmos
         /// <param name="id">The items unique id. (NOTE: Not uncommon to have the same unique ids in different partitions.)</param>
         /// <param name="partition">The separation of items within the collection.</param>
         /// <returns></returns>
-        public virtual Task<CosmosResponse<T>> DeleteItemAsync(string id, object partition, CancellationToken cancellation = default)
+        public virtual Task<CosmosItemResponse<T>> DeleteItemAsync(string id, object partition, CancellationToken cancellation = default)
         {
             var partitionKey = GetPartitionKey(partition) ?? 
                 throw new ArgumentNullException("Partition must be provided when Deleting an item from Cosmos Db.");
@@ -221,9 +143,10 @@ namespace Assimalign.Azure.Cosmos
             return Task.Run(async () =>
             {
                 var itemResponse = await container.DeleteItemAsync<T>(id, partitionKey,null, cancellation);
-                return new CosmosResponse<T>()
+                return new CosmosItemResponse<T>()
                 {
-                    Items = new[] { itemResponse.Resource },
+                    StatusCode = itemResponse.StatusCode,
+                    Item = itemResponse.Resource,
                     Stats = new CosmosExecutionStats()
                     {
                         EllapsedMilliseconds = (long)itemResponse.Diagnostics
@@ -235,53 +158,31 @@ namespace Assimalign.Azure.Cosmos
         }
 
         /// <summary>
-        /// Deletes a collection of items within the specified container for the requested partition.
+        /// 
         /// </summary>
+        /// <param name="item"></param>
+        /// <param name="partition"></param>
+        /// <param name="cancellation"></param>
         /// <returns></returns>
-        public virtual Task<CosmosBulkResponse> DeleteItemsAsync(IReadOnlyList<string> ids, object partition, CancellationToken cancellation = default)
-        {
-            var partitionKey = GetPartitionKey(partition) ??
-                throw new ArgumentNullException("Partition must be provided when Deleting an item from Cosmos Db.");
-
-            return Task.Run(async () =>
-            {
-                var transaction = container.CreateTransactionalBatch(partitionKey);
-                foreach(var id in ids)
-                {
-                    transaction.DeleteItem(id);
-                }
-
-                var transactionResponse = await transaction.ExecuteAsync(cancellation);
-                return new CosmosBulkResponse()
-                {
-                    StatusCode = transactionResponse.StatusCode,
-                    ErrorMessage = transactionResponse.ErrorMessage,
-                    Count = transactionResponse.Count,
-                    Stats = new CosmosExecutionStats()
-                    {
-                        EllapsedMilliseconds = (long)transactionResponse.Diagnostics
-                            .GetClientElapsedTime()
-                            .TotalMilliseconds
-                    }
-                };
-            });
-        }
+        public virtual Task<CosmosItemResponse<T>> UpsertItemAsync(T item, Func<T, object> partition, CancellationToken cancellation = default) =>
+            UpsertItemAsync(item, partition.Invoke(item), cancellation);
 
         /// <summary>
         /// Creates or Updates an existing item within cosmos container.
         /// </summary>
         /// <param name="item"></param>
         /// <param name="partition">The separation of items within the collection.</param>
+        /// <param name="cancellation"></param>
         /// <returns></returns>
-        public virtual Task<CosmosResponse<T>> UpsertItemAsync(T item, object partition = null, CancellationToken cancellation = default)
+        public virtual Task<CosmosItemResponse<T>> UpsertItemAsync(T item, object partition = null, CancellationToken cancellation = default)
         {
             var partitionKey = GetPartitionKey(partition);
             return Task.Run(async () =>
             {
                 var itemResponse = await container.UpsertItemAsync(item, partitionKey, null, cancellation);
-                var cosmosResponse = new CosmosResponse<T>()
+                var cosmosResponse = new CosmosItemResponse<T>()
                 {
-                    Items = new[] { itemResponse.Resource },
+                    Item = itemResponse.Resource,
                     Stats = new CosmosExecutionStats()
                     {
                         EllapsedMilliseconds = (long)itemResponse.Diagnostics
@@ -309,7 +210,7 @@ namespace Assimalign.Azure.Cosmos
         /// <param name="options"></param>
         /// <param name="cancellation"></param>
         /// <returns></returns>
-        public virtual Task<CosmosResponse<T>> PatchItemAsync(T item, object partition, string id, CosmosPatcherOptions options = null, CancellationToken cancellation = default)
+        public virtual Task<CosmosItemResponse<T>> PatchItemAsync(T item, object partition, string id, CosmosPatcherOptions options = null, CancellationToken cancellation = default)
         {
             var partitionKey = GetPartitionKey(partition) ??
                 throw new ArgumentNullException("Partition Key is Required when reading item by id within Cosmos Db.");
@@ -320,9 +221,9 @@ namespace Assimalign.Azure.Cosmos
                 var itemMerge = CosmosPatcher.Merge<T>(itemCurrent.Resource, item, options);
                 var itemPatch = await container.UpsertItemAsync(itemMerge, partitionKey);
 
-                var cosmosResponse = new CosmosResponse<T>()
+                var cosmosResponse = new CosmosItemResponse<T>()
                 {
-                    Items = new[] { itemPatch.Resource },
+                    Item = itemPatch.Resource ,
                     Stats = new CosmosExecutionStats()
                     {
                         EllapsedMilliseconds = (long)itemPatch.Diagnostics
@@ -336,14 +237,64 @@ namespace Assimalign.Azure.Cosmos
             });
         }
 
+        public Task<CosmosBulkResponse<T>> BatchItemsAsync(CosmosBulkRequest<T> requests, CancellationToken cancellation = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Get items based on requested query. If query is null all items will be returned
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="cancellation"></param>
+        /// <returns></returns>
+        public virtual Task<CosmosCollectionResponse<T>> QueryItemsAsync(ICosmosQuery<T> query = null, CancellationToken cancellation = default)
+        {
+            query ??= new CosmosQuery<T>();
+
+            return Task.Run(async () =>
+            {
+                long elapsedTime = 0;
+                var resources = new List<T>();
+                var linqQuery = container.GetItemLinqQueryable<T>().CreateQuery(query as CosmosQuery<T>);
+                var linqDefinition = linqQuery.ToQueryDefinition();
+
+                using (FeedIterator<T> iterator = linqQuery.ToFeedIterator())
+                {
+                    while (iterator.HasMoreResults)
+                    {
+                        var iteratorResponse = await iterator.ReadNextAsync(cancellation);
+                        foreach (var resource in iteratorResponse)
+                        {
+                            resources.Add(resource);
+                        }
+                        elapsedTime += (long)iteratorResponse.Diagnostics
+                            .GetClientElapsedTime()
+                            .TotalMilliseconds;
+                    }
+                }
+
+                var cosmosResponse = new CosmosCollectionResponse<T>()
+                {
+                    Items = resources,
+                    ItemsQuery = linqDefinition.QueryText.Replace('"', ' ').Replace("[ ", "['").Replace(" ]", "']"),
+                    StatusCode = HttpStatusCode.OK,
+                    Stats = new CosmosExecutionStats()
+                    {
+                        EllapsedMilliseconds = elapsedTime
+                    }
+                };
+
+                return cosmosResponse;
+            });
+        }
+
 
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="partition"></param>
-        /// <param name="required"></param>
-        /// <param name="member"></param>
         /// <returns></returns>
         private PartitionKey? GetPartitionKey(object partition)
         {
@@ -377,6 +328,10 @@ namespace Assimalign.Azure.Cosmos
         {
             queryCache.Clear();
             client.Dispose();
-        }        
+        }
+
+
+
+        
     }
 }

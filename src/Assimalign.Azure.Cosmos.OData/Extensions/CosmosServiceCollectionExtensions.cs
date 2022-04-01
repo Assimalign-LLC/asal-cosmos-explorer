@@ -23,12 +23,12 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services"></param>
         /// <param name="configure"></param>
         /// <returns></returns>
-        public static IServiceCollection AddCosmosService<T>(this IServiceCollection services, Action<CosmosOptions> configure)
+        public static IServiceCollection AddCosmosService<T>(this IServiceCollection services, Action<CosmosRepositoryOptions> configure)
             where T : class, new()
         {
             return services.AddSingleton<ICosmosRepository<T>, CosmosRepository<T>>(serviceProvider =>
             {
-                var options = new CosmosOptions();
+                var options = new CosmosRepositoryOptions();
                 configure.Invoke(options);
                 return new CosmosRepositoryDefault<T>(options);
             });
@@ -41,12 +41,12 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services"></param>
         /// <param name="configure"></param>
         /// <returns></returns>
-        public static IServiceCollection AddCosmosService<T>(this IServiceCollection services, Action<IServiceProvider, CosmosOptions> configure)
+        public static IServiceCollection AddCosmosService<T>(this IServiceCollection services, Action<IServiceProvider, CosmosRepositoryOptions> configure)
             where T : class, new()
         {
             return services.AddSingleton<ICosmosRepository<T>, CosmosRepository<T>>(serviceProvider =>
             {
-                var options = new CosmosOptions();
+                var options = new CosmosRepositoryOptions();
                 configure.Invoke(serviceProvider, options);
                 return new CosmosRepositoryDefault<T>(options);
             });
@@ -60,7 +60,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services"></param>
         /// <param name="configure"></param>
         /// <returns></returns>
-        public static IServiceCollection AddCosmosService<T>(this IServiceCollection services, Func<IServiceProvider, CosmosOptions> configure)
+        public static IServiceCollection AddCosmosService<T>(this IServiceCollection services, Func<IServiceProvider, CosmosRepositoryOptions> configure)
             where T : class, new()
         {
             return services.AddSingleton<ICosmosRepository<T>, CosmosRepository<T>>(serviceProvider =>
@@ -74,7 +74,7 @@ namespace Microsoft.Extensions.DependencyInjection
         internal sealed class CosmosRepositoryDefault<T> : CosmosRepository<T>
             where T : class, new()
         {
-            public CosmosRepositoryDefault(CosmosOptions options) 
+            public CosmosRepositoryDefault(CosmosRepositoryOptions options) 
                 : base(options) { }
         }
     }

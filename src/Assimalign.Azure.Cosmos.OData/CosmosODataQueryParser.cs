@@ -11,7 +11,7 @@ namespace Assimalign.Azure.Cosmos.OData
 {
     using Assimalign.Azure.Cosmos.Serialization;
 
-    internal sealed class CosmosODataQueryParser : CosmosQueryParser
+    internal sealed class CosmosODataQueryParser : CosmosSerializer
     {
 
         private readonly CosmosODataOptions odataOptions;

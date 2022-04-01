@@ -22,7 +22,7 @@ namespace Assimalign.Azure.Cosmos.Bindings
     internal sealed partial class CosmosBindingExtensionBindingProvider<T> : IExtensionConfigProvider
         where T : class, new()
     {
-        private readonly CosmosOptions cosmosOptions;
+        private readonly CosmosRepositoryOptions cosmosOptions;
         private readonly ICosmosRepository<T> cosmosRepository;
         private readonly IHttpContextAccessor httpContextAccessor;
 
@@ -30,7 +30,7 @@ namespace Assimalign.Azure.Cosmos.Bindings
         private readonly IDictionary<string, Type> fields;
 
         public CosmosBindingExtensionBindingProvider(
-            IOptions<CosmosOptions> cosmosOptions,
+            IOptions<CosmosRepositoryOptions> cosmosOptions,
             ICosmosRepository<T> cosmosRepository,
             IHttpContextAccessor httpContextAccessor)
         {
@@ -108,6 +108,6 @@ namespace Assimalign.Azure.Cosmos.Bindings
         /// <param name="context"></param>
         /// <returns></returns>
         private Task<ICosmosQuery<T>> GetCosmosQueryAsync(CosmosBindingAttribute attribute, ValueBindingContext context) =>
-            cosmosOptions.QueryParser.ParseAsync<T>(httpContextAccessor.HttpContext, context);
+            cosmosOptions.Serializer.DeserializeQueryAsync<T>(httpContextAccessor.HttpContext, context);
     }
 }

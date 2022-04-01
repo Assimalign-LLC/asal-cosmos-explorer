@@ -4,19 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assimalign.Azure.Cosmos.Internals
+namespace Assimalign.Azure.Cosmos
 {
     /// <summary>
-    /// Reserved words for manipulating query functionality
+    /// 
     /// </summary>
-    internal class CosmosReservedWord
+    /// <typeparam name="T"></typeparam>
+    public class CosmosBulkRequest<T>
+        where T : class, new()
     {
         /// <summary>
         /// 
         /// </summary>
-        public const string Root = "$root";
-
-
-        //public const string 
+        public IEnumerable<CosmosBulkRequestAction<T>> Actions { get; set; }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Microsoft.Azure.WebJobs
 {
     using Assimalign.Azure.Cosmos;
-    using Assimalign.Azure.Cosmos.Bindings;
+    using Assimalign.Azure.Cosmos.OData.Bindings;
     using Assimalign.Azure.Cosmos.OData;
     
 
@@ -23,7 +23,7 @@ namespace Microsoft.Azure.WebJobs
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
-        public static IWebJobsBuilder AddCosmosODataExtensions<T>(this IWebJobsBuilder builder, Action<CosmosOptions> configure)
+        public static IWebJobsBuilder AddCosmosODataExtensions<T>(this IWebJobsBuilder builder, Action<CosmosRepositoryOptions> configure)
             where T : class, new()
         {
             builder.Services.AddHttpContextAccessor();
@@ -36,11 +36,23 @@ namespace Microsoft.Azure.WebJobs
                     .SelectMany(b => b.DeclaredMethods)
                     .Where(x => 
                     {
-                        bool isValid = x.CustomAttributes.Any(a => a.AttributeType == typeof(FunctionNameAttribute)) &&
-                                       x.GetParameters().Any(x => x.CustomAttributes.FirstOrDefault()?.AttributeType == typeof(HttpTriggerAttribute));
-
-                        return isValid;
+                        return  x.CustomAttributes.Any(a => a.AttributeType == typeof(FunctionNameAttribute)) &&
+                                x.GetParameters().SelectMany(x => x.CustomAttributes.Select(x => x.AttributeType))
+                                    .Any(x => x == typeof(CosmosODataQueryAttribute) || x == typeof(CosmosODataResourceAttribute));
                     }));
+
+            var checkForNonHttpTriggers = functions
+                .Where(x => x.GetParameters()
+                .SelectMany(x => x.CustomAttributes
+                .Select(x => x.AttributeType))
+                .All(x => x.Name.ToLower() != "httptriggerattribute"));
+
+            if (checkForNonHttpTriggers.Any())
+            {
+                throw new Exception("'CosmosODataQueryAttribute' & 'CosmosODataResourceAttribute' can only be registered to HttpTrigger Functions.");
+            }
+
+         
 
 
             // Checks Required:

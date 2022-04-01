@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libraries", "libraries", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{929E5AC9-5248-4B70-9D43-20A88ADD3799}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assimalign.Azure.Cosmos.Authorization", "Assimalign.Azure.Cosmos.Authorization\Assimalign.Azure.Cosmos.Authorization.csproj", "{38B5A04A-DAA7-41C2-8AFA-7F54DEC3CC00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assimalign.Azure.Cosmos.Extensions", "Assimalign.Azure.Cosmos.Authorization\Assimalign.Azure.Cosmos.Extensions.csproj", "{38B5A04A-DAA7-41C2-8AFA-7F54DEC3CC00}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{EB84274F-8A05-46B5-9C69-BAC541B0E176}"
 	ProjectSection(SolutionItems) = preProject
@@ -20,9 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "references", "references", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assimalign.Azure.CosmosTests", "..\..\tests\Assimalign.Azure.CosmosTests\Assimalign.Azure.CosmosTests\Assimalign.Azure.CosmosTests.csproj", "{36510882-7F47-4BAC-A52A-9BD71BF21F6E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assimalign.Azure.Cosmos.OData", "Assimalign.Azure.Cosmos.OData\Assimalign.Azure.Cosmos.OData.csproj", "{518CB69A-7948-4EC8-B3EE-D2ADF94B9DB3}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assimalign.Azure.Cosmos.OData.Authorization", "Assimalign.Azure.Cosmos.OData.Authorization\Assimalign.Azure.Cosmos.OData.Authorization.csproj", "{02A28A67-B33A-4ACA-8F83-164791336FE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assimalign.Azure.Cosmos.OData.Extensions", "Assimalign.Azure.Cosmos.OData\Assimalign.Azure.Cosmos.OData.Extensions.csproj", "{518CB69A-7948-4EC8-B3EE-D2ADF94B9DB3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assimalign.Azure.Cosmos.Graphql", "Assimalign.Azure.Cosmos.Graphql\Assimalign.Azure.Cosmos.Graphql.csproj", "{5E2873C9-9681-4750-A2DD-2ABDF98D3EFF}"
 EndProject
@@ -58,10 +56,6 @@ Global
 		{518CB69A-7948-4EC8-B3EE-D2ADF94B9DB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{518CB69A-7948-4EC8-B3EE-D2ADF94B9DB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{518CB69A-7948-4EC8-B3EE-D2ADF94B9DB3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02A28A67-B33A-4ACA-8F83-164791336FE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02A28A67-B33A-4ACA-8F83-164791336FE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02A28A67-B33A-4ACA-8F83-164791336FE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02A28A67-B33A-4ACA-8F83-164791336FE9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5E2873C9-9681-4750-A2DD-2ABDF98D3EFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5E2873C9-9681-4750-A2DD-2ABDF98D3EFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E2873C9-9681-4750-A2DD-2ABDF98D3EFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -83,7 +77,6 @@ Global
 		{38B5A04A-DAA7-41C2-8AFA-7F54DEC3CC00} = {8BE2D90E-1BB3-445C-B819-8C24B6683878}
 		{36510882-7F47-4BAC-A52A-9BD71BF21F6E} = {929E5AC9-5248-4B70-9D43-20A88ADD3799}
 		{518CB69A-7948-4EC8-B3EE-D2ADF94B9DB3} = {8BE2D90E-1BB3-445C-B819-8C24B6683878}
-		{02A28A67-B33A-4ACA-8F83-164791336FE9} = {8BE2D90E-1BB3-445C-B819-8C24B6683878}
 		{5E2873C9-9681-4750-A2DD-2ABDF98D3EFF} = {5F819C4F-460D-4CB4-B8E2-9C80FAB2B50E}
 		{09AC708C-52CF-4712-AC46-01D0E1F46AD5} = {5F819C4F-460D-4CB4-B8E2-9C80FAB2B50E}
 		{EAA1D926-E997-4767-9BAB-AABCF1D4BEC2} = {31D18C36-4CC1-4473-AC05-CAE85CC86EEF}

@@ -10,7 +10,7 @@ namespace Assimalign.Azure.Cosmos.Authorization
 
 
 
-        Task<CosmosResponse<T>> GetAuthorizedItemsAsync(CosmosQuery<T>? query, ClaimsPrincipal claimsPrincipal);
+        Task<CosmosCollectionResponse<T>> GetAuthorizedItemsAsync(CosmosQuery<T>? query, ClaimsPrincipal claimsPrincipal);
 
 
 

@@ -16,7 +16,7 @@ namespace Microsoft.Azure.WebJobs
         /// <param name="builder"></param>
         /// <param name="configure"></param>
         /// <returns></returns>
-        public static IWebJobsBuilder AddCosmosExtensions<T>(this IWebJobsBuilder builder, Action<CosmosOptions> configure)
+        public static IWebJobsBuilder AddCosmosExtensions<T>(this IWebJobsBuilder builder, Action<CosmosRepositoryOptions> configure)
             where T : class, new()
         {
             builder.Services.AddCosmosService<T>(configure);
@@ -32,7 +32,7 @@ namespace Microsoft.Azure.WebJobs
         /// <param name="builder"></param>
         /// <param name="configure"></param>
         /// <returns></returns>
-        public static IWebJobsBuilder AddCosmosExtensions<T>(this IWebJobsBuilder builder, Action<IServiceProvider, CosmosOptions> configure)
+        public static IWebJobsBuilder AddCosmosExtensions<T>(this IWebJobsBuilder builder, Action<IServiceProvider, CosmosRepositoryOptions> configure)
            where T : class, new()
         {
             builder.Services.AddCosmosService<T>(configure);
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.WebJobs
         /// <param name="builder"></param>
         /// <param name="configure"></param>
         /// <returns></returns>
-        public static IWebJobsBuilder AddCosmosExtensions<T>(this IWebJobsBuilder builder, Func<IServiceProvider, CosmosOptions> configure)
+        public static IWebJobsBuilder AddCosmosExtensions<T>(this IWebJobsBuilder builder, Func<IServiceProvider, CosmosRepositoryOptions> configure)
             where T : class, new()
         {
             builder.Services.AddCosmosService<T>(configure);

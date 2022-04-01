@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
+using System.Collections;
 
 namespace Assimalign.Azure.Cosmos
 {
@@ -12,13 +12,11 @@ namespace Assimalign.Azure.Cosmos
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public sealed class CosmosResponse<T>
-        where T : class, new()
+    public sealed class CosmosCollectionResponse<T>
+       // where T : class, new()
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        internal CosmosQuery<T> Query { get; set; }
+        private readonly IList<T> resources = new List<T>();
+
 
         /// <summary>
         /// The defined status code for HTTP.
@@ -28,17 +26,12 @@ namespace Assimalign.Azure.Cosmos
         /// <summary>
         /// The item count returned from query request.
         /// </summary>
-        public long Count => Items.LongCount();
+        public long Count => resources.Count;
 
         /// <summary>
         /// The collection of items for a particular container.
         /// </summary>
         public IEnumerable<T> Items { get; set; }
-
-        /// <summary>
-        /// Cross queries related items
-        /// </summary>
-        public IEnumerable<T> ResolvedItems { get; set; }
 
         /// <summary>
         /// The SQL query conversion used to query the collection.
@@ -49,5 +42,10 @@ namespace Assimalign.Azure.Cosmos
         /// The execution stats for the query request.
         /// </summary>
         public CosmosExecutionStats Stats { get; set; }
+
+
+
+        internal void AddResource(T item) => resources.Add(item);
+        internal void AddResources(IEnumerable<T> items) => ((List<T>)resources).AddRange(items);
     }
 }

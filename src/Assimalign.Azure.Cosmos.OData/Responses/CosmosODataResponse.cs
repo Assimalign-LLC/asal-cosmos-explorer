@@ -11,13 +11,13 @@ namespace Assimalign.Azure.Cosmos.OData.Responses
     {
 
 
-        public static IActionResult Ok<T>(CosmosResponse<T> response)
+        public static IActionResult Ok<T>(CosmosCollectionResponse<T> response)
             where T : class, new()
         {
             throw new NotImplementedException();
         }
 
-        public static IActionResult Accepted<T>(CosmosResponse<T> response)
+        public static IActionResult Accepted<T>(CosmosCollectionResponse<T> response)
             where T : class, new()
         {
             throw new NotImplementedException();

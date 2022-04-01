@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Assimalign.Azure.Cosmos
 {
-    public sealed class CosmosBulkResponse
+    public sealed class CosmosBulkResponse<T>
+        where T : class, new()
     {
 
         /// <summary>
@@ -22,6 +23,11 @@ namespace Assimalign.Azure.Cosmos
         /// The number of effected items within the the bulk operation.
         /// </summary>
         public int Count { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IEnumerable<CosmosBulkTransaction<T>> Responses { get; set; }
 
         /// <summary>
         /// 

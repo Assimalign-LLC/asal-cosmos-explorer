@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assimalign.Azure.Cosmos.OData.Builder
+namespace Assimalign.Azure.Cosmos.OData
 {
-    public static class CosmosODataQueryBuilder
+    internal class CosmosODataModel<T>
     {
         
     }

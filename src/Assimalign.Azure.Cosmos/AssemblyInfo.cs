@@ -15,3 +15,4 @@ using System.Runtime.CompilerServices;
 [assembly: Guid("430a20bd-6828-451c-b675-c2a6ae1d962f")]
 [assembly: InternalsVisibleTo("Assimalign.Azure.CosmosTests")]
 [assembly: InternalsVisibleTo("Assimalign.Azure.Cosmos.Authorization")]
+[assembly: InternalsVisibleTo("Assimalign.Azure.Cosmos.OData")]

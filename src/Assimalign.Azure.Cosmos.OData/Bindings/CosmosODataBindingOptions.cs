@@ -5,9 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.OData.Edm;
 
-namespace Assimalign.Azure.Cosmos.OData
+namespace Assimalign.Azure.Cosmos.OData.Bindings
 {
-    internal sealed class CosmosODataBindingOptions
+    internal sealed class CosmosODataBindingOptions<T>
+        where T : class, new()
     {
 
         public string Route { get; set; }

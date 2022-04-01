@@ -13,7 +13,7 @@ namespace Assimalign.Azure.Cosmos.Authorization
 
 
         public CosmosConfidentialRepository(CosmosAuthorizationOptions<T> options) 
-            : base (new CosmosOptions()
+            : base (new CosmosRepositoryOptions()
             {
                 Database = options.Database,
                 Container = options.Container,
@@ -33,11 +33,11 @@ namespace Assimalign.Azure.Cosmos.Authorization
         /// <param name="query"></param>
         /// <param name="claimsPrincipal"></param>
         /// <returns></returns>
-        public Task<CosmosResponse<T>> GetAuthorizedItemsAsync(CosmosQuery<T>? query, ClaimsPrincipal claimsPrincipal)
+        public Task<CosmosCollectionResponse<T>> GetAuthorizedItemsAsync(CosmosQuery<T>? query, ClaimsPrincipal claimsPrincipal)
         {
             return Task.Run(async () =>
             {
-                return new CosmosResponse<T>();
+                return new CosmosCollectionResponse<T>();
             });
         }
     }

@@ -14,7 +14,8 @@ using Microsoft.Extensions.Logging;
 namespace Assimalign.Azure.CosmosDemo.Http
 {
     using Assimalign.Azure.Cosmos;
-    using Assimalign.Azure.Cosmos.Bindings;
+    using Assimalign.Azure.Cosmos.OData;
+    using Assimalign.Azure.Cosmos.OData.Bindings;
     using Assimalign.Azure.Cosmos.Exceptions;
     
 
@@ -38,7 +39,7 @@ namespace Assimalign.Azure.CosmosDemo.Http
             {
                 var results = await repository.CreateItemAsync(employee, key=>key.YearStarted);
 
-                return OkJsonResponse<CosmosResponse<Employee>>.Create(results, 201);
+                return OkJsonResponse<CosmosCollectionResponse<Employee>>.Create(results, 201);
             }
             catch(CosmosQueryException exception)
             {
@@ -80,8 +81,8 @@ namespace Assimalign.Azure.CosmosDemo.Http
         [FunctionName("HttpCosmosQueryEmployee")]
         public async Task<IActionResult> GetUsersAsync(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "query/employees")] HttpRequest request,
-            [CosmosBinding] ICosmosQuery<Employee> query,
-            [CosmosBinding] ICosmosRepository<Employee> repository,
+            [CosmosODataQuery] ICosmosQuery<Employee> query,
+            [CosmosODataRepository] ICosmosRepository<Employee> repository,
             ILogger logger)
         {
             try
@@ -89,7 +90,7 @@ namespace Assimalign.Azure.CosmosDemo.Http
                
                 var results = await repository.GetItemsAsync(query);
 
-                return OkJsonResponse<CosmosResponse<Employee>>.Create(results, 200);
+                return OkJsonResponse<CosmosCollectionResponse<Employee>>.Create(results, 200);
             }
             catch(CosmosQueryException exception)
             {
