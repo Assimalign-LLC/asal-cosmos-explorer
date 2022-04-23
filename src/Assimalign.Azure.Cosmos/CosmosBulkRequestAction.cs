@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assimalign.Azure.Cosmos
 {
+
     /// <summary>
     /// 
     /// </summary>
